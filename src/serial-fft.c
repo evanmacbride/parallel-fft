@@ -34,7 +34,8 @@ void show(const char * s, cplx buf[]) {
 	printf("%s", s);
 	for (int i = 0; i < 8; i++)
 		if (!cimag(buf[i]))
-			printf("(%g, 0)", creal(buf[i]));
+      // If there's no imaginary component, print 0.
+			printf("(%g, 0) ", creal(buf[i]));
 		else
 			printf("(%g, %g) ", creal(buf[i]), cimag(buf[i]));
 }
@@ -47,6 +48,7 @@ int main()
 	show("Data: ", buf);
 	fft(buf, 8);
 	show("\nFFT : ", buf);
+  printf("\n");
 
 	return 0;
 }
