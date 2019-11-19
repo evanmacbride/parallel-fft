@@ -1,0 +1,137 @@
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/uh/!svn/ver/21/trunk/Source_Code/sFFT-1.0-2.0-seq
+END
+generate_graphs.cc
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/uh/!svn/ver/21/trunk/Source_Code/sFFT-1.0-2.0-seq/generate_graphs.cc
+END
+GNUmakefile.bak
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/uh/!svn/ver/21/trunk/Source_Code/sFFT-1.0-2.0-seq/GNUmakefile.bak
+END
+utils.cc
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/uh/!svn/ver/21/trunk/Source_Code/sFFT-1.0-2.0-seq/utils.cc
+END
+utils.h
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/uh/!svn/ver/21/trunk/Source_Code/sFFT-1.0-2.0-seq/utils.h
+END
+parameters.cc
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/uh/!svn/ver/21/trunk/Source_Code/sFFT-1.0-2.0-seq/parameters.cc
+END
+parameters.h
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/uh/!svn/ver/21/trunk/Source_Code/sFFT-1.0-2.0-seq/parameters.h
+END
+fftw.cc
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/uh/!svn/ver/21/trunk/Source_Code/sFFT-1.0-2.0-seq/fftw.cc
+END
+filters.cc
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/uh/!svn/ver/21/trunk/Source_Code/sFFT-1.0-2.0-seq/filters.cc
+END
+fftw.h
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/uh/!svn/ver/21/trunk/Source_Code/sFFT-1.0-2.0-seq/fftw.h
+END
+computefourier.cc
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/uh/!svn/ver/21/trunk/Source_Code/sFFT-1.0-2.0-seq/computefourier.cc
+END
+filters.h
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/uh/!svn/ver/21/trunk/Source_Code/sFFT-1.0-2.0-seq/filters.h
+END
+computefourier.h
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/uh/!svn/ver/21/trunk/Source_Code/sFFT-1.0-2.0-seq/computefourier.h
+END
+kaiserbessel.cc
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/uh/!svn/ver/21/trunk/Source_Code/sFFT-1.0-2.0-seq/kaiserbessel.cc
+END
+plot.cc
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/uh/!svn/ver/21/trunk/Source_Code/sFFT-1.0-2.0-seq/plot.cc
+END
+experiment.cc
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/uh/!svn/ver/21/trunk/Source_Code/sFFT-1.0-2.0-seq/experiment.cc
+END
+plot.h
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/uh/!svn/ver/21/trunk/Source_Code/sFFT-1.0-2.0-seq/plot.h
+END
+timer.cc
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/uh/!svn/ver/21/trunk/Source_Code/sFFT-1.0-2.0-seq/timer.cc
+END
+fft.h
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/uh/!svn/ver/21/trunk/Source_Code/sFFT-1.0-2.0-seq/fft.h
+END
+README.pdf
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/uh/!svn/ver/21/trunk/Source_Code/sFFT-1.0-2.0-seq/README.pdf
+END
+timer.h
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/uh/!svn/ver/21/trunk/Source_Code/sFFT-1.0-2.0-seq/timer.h
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/uh/!svn/ver/21/trunk/Source_Code/sFFT-1.0-2.0-seq/Makefile
+END
+run.sh
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/uh/!svn/ver/21/trunk/Source_Code/sFFT-1.0-2.0-seq/run.sh
+END
