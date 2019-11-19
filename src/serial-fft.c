@@ -30,9 +30,9 @@ void fft(cplx buf[], int n)
 }
 
 
-void show(const char * s, cplx buf[]) {
+void show(const char * s, cplx buf[], int size) {
 	printf("%s", s);
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < size; i++)
 		if (!cimag(buf[i]))
       // If there's no imaginary component, print 0.
 			printf("(%g, 0) ", creal(buf[i]));
@@ -43,11 +43,12 @@ void show(const char * s, cplx buf[]) {
 int main()
 {
 	PI = atan2(1, 1) * 4;
-	cplx buf[] = {1, 1, 1, 1, 0, 0, 0, 0};
-
-	show("Data: ", buf);
-	fft(buf, 8);
-	show("\nFFT : ", buf);
+	cplx buf[] = {1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0};
+  int bufsize = sizeof(buf)/sizeof(cplx);
+  // TODO: Pass size of buf into show()
+	show("Data: ", buf, bufsize);
+	fft(buf, bufsize);
+	show("\nFFT : ", buf, bufsize);
   printf("\n");
 
 	return 0;
