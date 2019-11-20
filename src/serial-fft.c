@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <math.h>
 #include <complex.h>
+#include <stdlib.h>
+#include <string.h>
 
 double PI;
 typedef double complex cplx;
@@ -29,7 +31,6 @@ void fft(cplx buf[], int n)
 	_fft(buf, out, n, 1);
 }
 
-
 void show(const char * s, cplx buf[], int size) {
 	printf("%s", s);
 	for (int i = 0; i < size; i++)
@@ -40,16 +41,60 @@ void show(const char * s, cplx buf[], int size) {
 			printf("(%g, %g) ", creal(buf[i]), cimag(buf[i]));
 }
 
-int main()
+// Get next highest power of 2.
+// https://stackoverflow.com/questions/466204/rounding-up-to-next-power-of-2
+unsigned long next_2_power(unsigned long v) {
+  v--;
+  v |= v >> 1;
+  v |= v >> 2;
+  v |= v >> 4;
+  v |= v >> 8;
+  v |= v >> 16;
+  v++;
+  return v;
+}
+
+// Fill an array with generated values.
+int* generate(cplx buf[], int size) {
+  for (int i = 0; i < size; i++) {
+    buf[i] = 1;
+  }
+}
+
+int main(int argc, char *argv[])
 {
+
+  FILE *fptr;
+  unsigned long num;
+  unsigned long size;
+  // TODO: Get filename from command line arguments. Check that argv[1] equals
+  // some flag, such as -f .
+  //
+  // Generate a test array based on command line input parameters. Make an array
+  // at least as big as a number passed after a -g flag.
+  if (argc > 2) {
+    if (strcmp(argv[1],"-g") == 0) {
+      num = atol(argv[2]);
+      size = next_2_power(num);
+    }
+  //  fptr = fopen(argv[2],"r");
+  }
+
 	PI = atan2(1, 1) * 4;
-	cplx buf[] = {1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0};
+  // Size of buf must be a power of 2 for algorithm to work.
+	cplx buf[] = {1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0};
+
+  //cplx buf[size];
+  //int* bluh = generate(buf, bufsize);
+
   int bufsize = sizeof(buf)/sizeof(cplx);
-  // TODO: Pass size of buf into show()
 	show("Data: ", buf, bufsize);
 	fft(buf, bufsize);
 	show("\nFFT : ", buf, bufsize);
   printf("\n");
 
+  if (fptr != NULL) {
+    fclose(fptr);
+  }
 	return 0;
 }
