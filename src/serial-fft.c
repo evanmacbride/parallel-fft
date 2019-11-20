@@ -5,6 +5,7 @@
 #include <complex.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 
 double PI;
 typedef double complex cplx;
@@ -55,16 +56,19 @@ unsigned long next_2_power(unsigned long v) {
 }
 
 // Fill an array with generated values.
-int* generate(cplx buf[], int size) {
-  for (int i = 0; i < size; i++) {
-    buf[i] = 1;
-  }
-}
+//cplx* generate(int size) {
+//  cplx gen[size];
+//  for (int i = 0; i < size; i++) {
+//    gen[i] = 1;
+//  }
+//  printf("%g\n", creal(gen[0]));
+//  return gen;
+//}
 
 int main(int argc, char *argv[])
 {
 
-  FILE *fptr;
+  //FILE *fptr;
   unsigned long num;
   unsigned long size;
   // TODO: Get filename from command line arguments. Check that argv[1] equals
@@ -75,26 +79,29 @@ int main(int argc, char *argv[])
   if (argc > 2) {
     if (strcmp(argv[1],"-g") == 0) {
       num = atol(argv[2]);
+      // Size of buf must be a power of 2 for algorithm to work.
       size = next_2_power(num);
+      cplx buf[size];
+      memset(buf,0,size*sizeof(cplx));
+      PI = atan2(1, 1) * 4;
+      int freq = 440;
+      int amp = 0.25 * INT_MAX;
+      int sampleRate = 44100;
+      for (int i = 0; i < size; i++) {
+        buf[i] = (cplx)(amp * sin((2 * PI * i * freq) / sampleRate));
+      }
+      //cplx buf[] = {1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0};
+      int bufsize = sizeof(buf)/sizeof(cplx);
+    	show("Data: ", buf, bufsize);
+    	fft(buf, bufsize);
+    	show("\nFFT : ", buf, bufsize);
+      printf("\n");
     }
   //  fptr = fopen(argv[2],"r");
   }
 
-	PI = atan2(1, 1) * 4;
-  // Size of buf must be a power of 2 for algorithm to work.
-	cplx buf[] = {1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0};
-
-  //cplx buf[size];
-  //int* bluh = generate(buf, bufsize);
-
-  int bufsize = sizeof(buf)/sizeof(cplx);
-	show("Data: ", buf, bufsize);
-	fft(buf, bufsize);
-	show("\nFFT : ", buf, bufsize);
-  printf("\n");
-
-  if (fptr != NULL) {
-    fclose(fptr);
-  }
+  //if (fptr != NULL) {
+  //  fclose(fptr);
+  //}
 	return 0;
 }
