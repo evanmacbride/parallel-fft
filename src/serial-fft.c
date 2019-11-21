@@ -84,19 +84,28 @@ int main(int argc, char *argv[])
       // Initialize the buffer
       cplx buf[size];
       memset(buf,0,size*sizeof(cplx));
-      // Fill the buffer with a size number of samples of a sine wave with freq,
-      // amp, and sampleRate. Adapted from
+
+			//int amp = 0.25 * INT_MAX;
+      //int sampleRate = 44100;
+
+      // Fill the buffer with a size number of samples spaced a step apart.
+			// Adapted from
       // https://stackoverflow.com/questions/203890/creating-sine-or-square-wave-in-c-sharp
       PI = atan2(1, 1) * 4;
-      int freq = 440;
-      int amp = 0.25 * INT_MAX;
-      int sampleRate = 44100;
-			// Write output to file for gnuplot to render.
+      int freq = 60;	// A low bass note with a long enough wavelength to be be
+											// easily visible
+			double timeInterval = 0.25;	// A long enough time period to show several
+																	// cycles of freq
+			double step = 0.0;
+			// Write test wave input to file for gnuplot to render
 			FILE *wavePlotFile = NULL;
 			wavePlotFile = fopen("wave.txt","w");
       for (int i = 0; i < size; i++) {
-        buf[i] = (cplx)(amp * sin((2 * PI * i * freq) / sampleRate));
-				fprintf(wavePlotFile, "%i\t%g\n",i,creal(buf[i]));
+				step += timeInterval / size;
+				buf[i] = (cplx)(sin(2 * PI * step * freq));
+				fprintf(wavePlotFile, "%f\t%g\n",step,creal(buf[i]));
+        //buf[i] = (cplx)(amp * sin((2 * PI * i * freq) / sampleRate));
+				//fprintf(wavePlotFile, "%i\t%g\n",i,creal(buf[i]));
       }
 			fclose(wavePlotFile);
       //cplx buf[] = {1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0};
@@ -108,6 +117,14 @@ int main(int argc, char *argv[])
 
 			int bufsize = sizeof(buf)/sizeof(cplx);
 			fft(buf, bufsize);
+
+			// Write fft output to file for gnuplot to render
+			FILE *fftPlotFile = NULL;
+			fftPlotFile = fopen("fft.txt","w");
+			for (int i = 0; i < size; i++) {
+				fprintf(fftPlotFile, "%i\t%g\n",i,creal(buf[i]));
+			}
+			fclose(fftPlotFile);
     }
   //  fptr = fopen(argv[2],"r");
   }
