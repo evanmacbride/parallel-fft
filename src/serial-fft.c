@@ -32,6 +32,7 @@ void fft(cplx buf[], int n)
 	_fft(buf, out, n, 1);
 }
 
+// Unnecessary if we're generating data files for gnuplot
 void show(const char * s, cplx buf[], int size) {
 	printf("%s", s);
 	for (int i = 0; i < size; i++)
@@ -55,24 +56,16 @@ unsigned long next_2_power(unsigned long v) {
   return v;
 }
 
-// Fill an array with generated values.
-//cplx* generate(int size) {
-//  cplx gen[size];
-//  for (int i = 0; i < size; i++) {
-//    gen[i] = 1;
-//  }
-//  printf("%g\n", creal(gen[0]));
-//  return gen;
-//}
-
 int main(int argc, char *argv[])
 {
-
-  //FILE *fptr;
   unsigned long num;
   unsigned long size;
-  // TODO: Get filename from command line arguments. Check that argv[1] equals
-  // some flag, such as -f .
+  // TODO: Generate different test waves based on command line arguments. Accept
+	// -sine, -square (or -saw), and -noise. Other command line arguments should
+	// be frequency and duration. Duration should be adjusted so that, when
+	// multiplied by a sampling frequency (such as the standard 44.1k), the number
+	// of samples will equal the next highest power of 2 (or else the simple
+	// version of the FFT algorithm in our function won't work).
   //
   // Generate a test array based on command line input parameters. Make an array
   // at least as big as a number passed after a -g flag.
@@ -85,7 +78,6 @@ int main(int argc, char *argv[])
       cplx buf[size];
       memset(buf,0,size*sizeof(cplx));
 
-			//int amp = 0.25 * INT_MAX;
       //int sampleRate = 44100;
 
       // Fill the buffer with a size number of samples spaced a step apart.
@@ -93,32 +85,32 @@ int main(int argc, char *argv[])
       // https://stackoverflow.com/questions/203890/creating-sine-or-square-wave-in-c-sharp
       PI = atan2(1, 1) * 4;
       int freq = 60;	// A low bass note with a long enough wavelength to be be
-											// easily visible
-			double timeInterval = 0.25;	// A long enough time period to show several
-																	// cycles of freq
+											// easily visible. TODO: Accept command line args for freq.
+			double duration = 0.25;	// A long enough time period to show several
+															// cycles of freq. TODO: Accept command line
+															// args for duration, then adjust so duration
+															// multiplied by sampling frequency equals the
+															// next highest power of 2.
 			double step = 0.0;
 			// Write test wave input to file for gnuplot to render
 			FILE *wavePlotFile = NULL;
 			wavePlotFile = fopen("wave.txt","w");
       for (int i = 0; i < size; i++) {
-				step += timeInterval / size;
+				step += duration / size;
 				buf[i] = (cplx)(sin(2 * PI * step * freq));
 				fprintf(wavePlotFile, "%f\t%g\n",step,creal(buf[i]));
-        //buf[i] = (cplx)(amp * sin((2 * PI * i * freq) / sampleRate));
-				//fprintf(wavePlotFile, "%i\t%g\n",i,creal(buf[i]));
       }
 			fclose(wavePlotFile);
-      //cplx buf[] = {1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0};
-      //int bufsize = sizeof(buf)/sizeof(cplx);
-    	//show("Data: ", buf, bufsize);
-    	//fft(buf, bufsize);
-    	//show("\nFFT : ", buf, bufsize);
-      //printf("\n");
 
+			// Run the fft
 			int bufsize = sizeof(buf)/sizeof(cplx);
 			fft(buf, bufsize);
 
 			// Write fft output to file for gnuplot to render
+			// TODO: Plot amplitudes against frequencies instead of the raw FFT. I
+			// want to do what's done here
+			// https://www.ritchievink.com/blog/2017/04/23/understanding-the-fourier-transform-by-example/
+			// with Python.
 			FILE *fftPlotFile = NULL;
 			fftPlotFile = fopen("fft.txt","w");
 			for (int i = 0; i < size; i++) {
@@ -126,11 +118,6 @@ int main(int argc, char *argv[])
 			}
 			fclose(fftPlotFile);
     }
-  //  fptr = fopen(argv[2],"r");
   }
-
-  //if (fptr != NULL) {
-  //  fclose(fptr);
-  //}
 	return 0;
 }
