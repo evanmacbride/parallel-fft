@@ -42,7 +42,7 @@ void show(const char * s, cplx buf[], int size) {
 			printf("(%g, %g) ", creal(buf[i]), cimag(buf[i]));
 }
 
-// Get next highest power of 2.
+// Get next highest power of 2. Adapted from
 // https://stackoverflow.com/questions/466204/rounding-up-to-next-power-of-2
 unsigned long next_2_power(unsigned long v) {
   v--;
@@ -81,21 +81,33 @@ int main(int argc, char *argv[])
       num = atol(argv[2]);
       // Size of buf must be a power of 2 for algorithm to work.
       size = next_2_power(num);
+      // Initialize the buffer
       cplx buf[size];
       memset(buf,0,size*sizeof(cplx));
+      // Fill the buffer with a size number of samples of a sine wave with freq,
+      // amp, and sampleRate. Adapted from
+      // https://stackoverflow.com/questions/203890/creating-sine-or-square-wave-in-c-sharp
       PI = atan2(1, 1) * 4;
       int freq = 440;
       int amp = 0.25 * INT_MAX;
       int sampleRate = 44100;
+			// Write output to file for gnuplot to render.
+			FILE *wavePlotFile = NULL;
+			wavePlotFile = fopen("wave.txt","w");
       for (int i = 0; i < size; i++) {
         buf[i] = (cplx)(amp * sin((2 * PI * i * freq) / sampleRate));
+				fprintf(wavePlotFile, "%i\t%g\n",i,creal(buf[i]));
       }
+			fclose(wavePlotFile);
       //cplx buf[] = {1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0};
-      int bufsize = sizeof(buf)/sizeof(cplx);
-    	show("Data: ", buf, bufsize);
-    	fft(buf, bufsize);
-    	show("\nFFT : ", buf, bufsize);
-      printf("\n");
+      //int bufsize = sizeof(buf)/sizeof(cplx);
+    	//show("Data: ", buf, bufsize);
+    	//fft(buf, bufsize);
+    	//show("\nFFT : ", buf, bufsize);
+      //printf("\n");
+
+			int bufsize = sizeof(buf)/sizeof(cplx);
+			fft(buf, bufsize);
     }
   //  fptr = fopen(argv[2],"r");
   }
