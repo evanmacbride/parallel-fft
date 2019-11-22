@@ -1,4 +1,5 @@
-// Retrieved from https://rosettacode.org/wiki/Fast_Fourier_transform#C
+// Original serial code retrieved from:
+// https://rosettacode.org/wiki/Fast_Fourier_transform#C
 
 #include <stdio.h>
 #include <math.h>
@@ -10,6 +11,8 @@
 double PI;
 typedef double complex cplx;
 
+// TODO: See if we can find an iterative version of the algorithm to get better
+// parallelization potential.
 void _fft(cplx buf[], cplx out[], int n, int step)
 {
 	if (step < n) {
@@ -59,7 +62,7 @@ unsigned long next_2_power(unsigned long v) {
 int main(int argc, char *argv[])
 {
   unsigned long num;
-  unsigned long size;
+  unsigned long num_samples;
   // TODO: Generate different test waves based on command line arguments. Accept
 	// -sine, -square (or -saw), and -noise. Other command line arguments should
 	// be frequency and duration. Duration should be adjusted so that, when
@@ -73,30 +76,25 @@ int main(int argc, char *argv[])
     if (strcmp(argv[1],"-g") == 0) {
       num = atol(argv[2]);
       // Size of buf must be a power of 2 for algorithm to work.
-      size = next_2_power(num);
+      num_samples = next_2_power(num);
       // Initialize the buffer
-      cplx buf[size];
-      memset(buf,0,size*sizeof(cplx));
+      cplx buf[num_samples];
+      memset(buf,0,num_samples*sizeof(cplx));
 
-      //int sampleRate = 44100;
-
-      // Fill the buffer with a size number of samples spaced a step apart.
+      // Fill the buffer with a num_samples number of samples spaced a step apart.
 			// Adapted from
       // https://stackoverflow.com/questions/203890/creating-sine-or-square-wave-in-c-sharp
       PI = atan2(1, 1) * 4;
-      int freq = 60;	// A low bass note with a long enough wavelength to be be
-											// easily visible. TODO: Accept command line args for freq.
-			double duration = 0.25;	// A long enough time period to show several
-															// cycles of freq. TODO: Accept command line
-															// args for duration, then adjust so duration
-															// multiplied by sampling frequency equals the
-															// next highest power of 2.
+      int freq = 5000;	// TODO: Accept command line args for freq.
+			double duration = 0.25;	// TODO: Accept command line args for duration,
+															// then adjust so duration multiplied by sampling
+															// frequency equals the next highest power of 2.
 			double step = 0.0;
 			// Write test wave input to file for gnuplot to render
 			FILE *wavePlotFile = NULL;
 			wavePlotFile = fopen("wave.txt","w");
-      for (int i = 0; i < size; i++) {
-				step += duration / size;
+      for (int i = 0; i < num_samples; i++) {
+				step += duration / num_samples;
 				buf[i] = (cplx)(sin(2 * PI * step * freq));
 				fprintf(wavePlotFile, "%f\t%g\n",step,creal(buf[i]));
       }
@@ -106,15 +104,19 @@ int main(int argc, char *argv[])
 			int bufsize = sizeof(buf)/sizeof(cplx);
 			fft(buf, bufsize);
 
-			// Write fft output to file for gnuplot to render
-			// TODO: Plot amplitudes against frequencies instead of the raw FFT. I
-			// want to do what's done here
+			// Plot the component frequencies represented by the FFT. Adapted from
+			// Python code found here:
 			// https://www.ritchievink.com/blog/2017/04/23/understanding-the-fourier-transform-by-example/
-			// with Python.
 			FILE *fftPlotFile = NULL;
 			fftPlotFile = fopen("fft.txt","w");
-			for (int i = 0; i < size; i++) {
-				fprintf(fftPlotFile, "%i\t%g\n",i,creal(buf[i]));
+			double freq_step = 0.0;
+			int end = num_samples / 2;
+			double T = duration / num_samples;
+			cplx val;
+			for (int i = 0; i < end; i++) {
+				val = (cplx)(fabs(buf[i]) / num_samples);
+				fprintf(fftPlotFile, "%f\t%g\n",freq_step,val);
+				freq_step += (1/T) / num_samples;
 			}
 			fclose(fftPlotFile);
     }
