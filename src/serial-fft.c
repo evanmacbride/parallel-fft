@@ -59,8 +59,6 @@ int main(int argc, char *argv[])
 	unsigned int sampling_frequency = 44100;
   unsigned long num_samples;
   // TODO: Generate square or saw wave. (Use -square or -saw flag.)
-	// Fix seg fault caused by too long durations (on my machine, anything over
-	// ~3s seg faults).
   //
   // Generate a test array based on command line input parameters. Make an array
   // at least as big as duration times sampling_frequency.
@@ -74,8 +72,8 @@ int main(int argc, char *argv[])
   // Size of buf must be a power of 2 for algorithm to work.
 	num_samples = next_2_power((unsigned long)(duration * sampling_frequency));
   // Initialize the buffer
-  cplx buf[num_samples];
-  memset(buf,0,num_samples*sizeof(cplx));
+	cplx* buf = (cplx*) malloc(num_samples * sizeof(cplx));
+	memset(buf,(cplx)0,num_samples*sizeof(buf));
 
   // Fill the buffer with a num_samples number of samples spaced a step apart.
 	// Adapted from
@@ -105,10 +103,9 @@ int main(int argc, char *argv[])
 	}
 	fclose(wavePlotFile);
 
-	// Initialize the out buffer. TODO: Allocate memory on the heap... If duration
-	// is too long (more than a few seconds) and buf and out are both on the
-	// stack, by the time out is initialized there will be stack overflow.
-	cplx out[num_samples];
+	// Initialize the out buffer.
+	cplx* out = (cplx*) malloc(num_samples * sizeof(cplx));
+	memset(out,(cplx)0,num_samples*sizeof(out));
 	for (int i = 0; i < num_samples; i++) {
 		out[i] = buf[i];
 	}
@@ -126,9 +123,11 @@ int main(int argc, char *argv[])
 	cplx val;
 	for (int i = 0; i < end; i++) {
 		val = (cplx)(fabs(buf[i]) / num_samples);
-		fprintf(fftPlotFile, "%f\t%g\n",freq_step,val);
+		fprintf(fftPlotFile, "%f\t%g\n",freq_step,creal(val));
 		freq_step += (1/T) / num_samples;
 	}
 	fclose(fftPlotFile);
+	free(buf);
+	free(out);
 	return 0;
 }
