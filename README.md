@@ -18,13 +18,15 @@ make acc
 make all
 ```
 
+```make serial``` compiles the original, unparallelized code, ```make omp``` compiles an OpenMP parallelization, ```make acc``` compiles an OpenACC parallelization, and ```make all``` compiles all three.
+
 Command line arguments can be given as follows:
 ```
-./serial -waveform duration frequency
+./executable -waveform duration frequency
 ```
 
 where ```duration``` is a decimal number in seconds, ```frequency``` is an
-integer greater than zero, and the options for ```waveform``` are
+integer greater than zero, the options for ```waveform``` are
 
 ```
 -sine
@@ -32,6 +34,18 @@ integer greater than zero, and the options for ```waveform``` are
 -noise
 -noisy
 ```
+
+and the options for ```executable``` are
+
+```
+serial-fft
+omp-fft
+acc-fft
+```
+
+```serial-fft``` is the original, unparallelized code, ```omp-fft``` is an
+OpenMP parallelization, and ```acc-fft``` is an OpenACC parallelization.
+
 
 ```-sine``` generates a sine wave at the given test frequency. ```-octaves```
 generates a sine wave at the given test frequency with two more sine waves at
