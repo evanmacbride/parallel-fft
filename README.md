@@ -10,6 +10,8 @@ fast Fourier transform (FFT) algorithm.
 
 ### How To Use
 
+#### Compiling
+
 A makefile is provided. The options are
 ```
 make serial
@@ -19,6 +21,11 @@ make all
 ```
 
 ```make serial``` compiles the original, unparallelized code, ```make omp``` compiles an OpenMP parallelization, ```make acc``` compiles an OpenACC parallelization, and ```make all``` compiles all three.
+
+There are also commands for ```make clean``` to remove all executables and
+```make run``` to run ```serial-fft``` with default settings.
+
+#### Running the program
 
 Command line arguments can be given as follows:
 ```
