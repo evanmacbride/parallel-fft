@@ -54,12 +54,12 @@ unsigned long next_2_power(unsigned long v) {
 
 int main(int argc, char *argv[])
 {
+	// Defaults for duration and frequency can be overwritten by command line
+	// arguments.
 	double duration = 0.5;
 	int freq = 60;
 	unsigned int sampling_frequency = 44100;
   unsigned long num_samples;
-  // TODO: Generate square or saw wave. (Use -square or -saw flag.)
-  //
   // Generate a test array based on command line input parameters. Make an array
   // at least as big as duration times sampling_frequency.
 	if (argc == 3) {
@@ -91,13 +91,50 @@ int main(int argc, char *argv[])
 			fprintf(wavePlotFile, "%f\t%g\n",step,creal(buf[i]));
     }
 	}
+	// Generate a square wave
+	//if (!argv[1] || strcmp(argv[1],"-square") == 0) {
+	//	int amp = 0;
+  //  for (int i = 0; i < num_samples; i++) {
+	//		amp = 1 - 2 * ((int)(step * 2 * freq) % 2);
+	//		step += duration / num_samples;
+	//		buf[i] = (cplx)amp;
+	//		fprintf(wavePlotFile, "%f\t%g\n",step,creal(buf[i]));
+  //  }
+	//}
+	// Generate a sine with two octaves
+	if (!argv[1] || strcmp(argv[1],"-octaves") == 0) {
+    for (int i = 0; i < num_samples; i++) {
+			step += duration / num_samples;
+			buf[i] = (cplx)(sin(2 * PI * step * freq)) +
+				0.33 * (cplx)(sin(2 * PI * step * 2 * freq)) +
+				0.11 * (cplx)(sin(2 * PI * step * 3 * freq));
+			fprintf(wavePlotFile, "%f\t%g\n",step,creal(buf[i]));
+    }
+	}
 	// Generate noise by using random values
 	else if (strcmp(argv[1],"-noise") == 0) {
+		int r = 0;
+		double randD = 0.0;
 		for (int i = 0; i < num_samples; i++) {
 			step += duration / num_samples;
-			int r = rand();
-			double randD = (double)r/INT_MAX;
+			r = rand();
+			randD = (double)r/INT_MAX;
 			buf[i] = (cplx)(randD + (r % 3) - 1);
+			fprintf(wavePlotFile, "%f\t%g\n",step,creal(buf[i]));
+    }
+	}
+	// Generate a sine with two octaves with noise
+	if (!argv[1] || strcmp(argv[1],"-noisy") == 0) {
+		int r = 0;
+		double randD = 0.0;
+    for (int i = 0; i < num_samples; i++) {
+			step += duration / num_samples;
+			r = rand();
+			randD = (double)r/INT_MAX;
+			buf[i] = (cplx)(sin(2 * PI * step * freq)) +
+				0.33 * (cplx)(sin(2 * PI * step * 2 * freq)) +
+				0.11 * (cplx)(sin(2 * PI * step * 3 * freq)) +
+				0.05 * (cplx)(randD + (r % 3) - 1);
 			fprintf(wavePlotFile, "%f\t%g\n",step,creal(buf[i]));
     }
 	}
