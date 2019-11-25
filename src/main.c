@@ -1,4 +1,4 @@
-// Original serial code retrieved from:
+// Original serial code snippet retrieved from:
 // https://rosettacode.org/wiki/Fast_Fourier_transform#C
 
 #include <stdio.h>
@@ -7,36 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
-
-double PI;
-typedef double complex cplx;
-
-// TODO: See if we can find an iterative version of the algorithm to get better
-// parallelization potential.
-void _fft(cplx buf[], cplx out[], int n, int step)
-{
-	if (step < n) {
-		_fft(out, buf, n, step * 2);
-		_fft(out + step, buf + step, n, step * 2);
-
-		for (int i = 0; i < n; i += 2 * step) {
-			cplx t = cexp(-I * PI * i / n) * out[i + step];
-			buf[i / 2]     = out[i] + t;
-			buf[(i + n)/2] = out[i] - t;
-		}
-	}
-}
-
-// Unnecessary if we're generating data files for gnuplot
-void show(const char * s, cplx buf[], int size) {
-	printf("%s", s);
-	for (int i = 0; i < size; i++)
-		if (!cimag(buf[i]))
-      // If there's no imaginary component, print 0.
-			printf("(%g, 0) ", creal(buf[i]));
-		else
-			printf("(%g, %g) ", creal(buf[i]), cimag(buf[i]));
-}
+#include "fft.h"
 
 // Get next highest power of 2. Adapted from
 // https://stackoverflow.com/questions/466204/rounding-up-to-next-power-of-2
@@ -54,6 +25,7 @@ unsigned long next_2_power(unsigned long v) {
 
 int main(int argc, char *argv[])
 {
+	double PI = atan2(1, 1) * 4;
 	// Defaults for duration and frequency can be overwritten by command line
 	// arguments.
 	double duration = 0.5;
@@ -72,13 +44,12 @@ int main(int argc, char *argv[])
   // Size of buf must be a power of 2 for algorithm to work.
 	num_samples = next_2_power((unsigned long)(duration * sampling_frequency));
   // Initialize the buffer
-	cplx* buf = (cplx*) malloc(num_samples * sizeof(cplx));
-	memset(buf,(cplx)0,num_samples*sizeof(buf));
+	double complex* buf = (double complex*) malloc(num_samples * sizeof(double complex));
+	memset(buf,(double complex)0,num_samples*sizeof(buf));
 
   // Fill the buffer with a num_samples number of samples spaced a step apart.
 	// Adapted from
   // https://stackoverflow.com/questions/203890/creating-sine-or-square-wave-in-c-sharp
-  PI = atan2(1, 1) * 4;
 	double step = 0.0;
 	// Write test wave input to file for gnuplot to render
 	FILE *wavePlotFile = NULL;
@@ -87,27 +58,16 @@ int main(int argc, char *argv[])
 	if (!argv[1] || strcmp(argv[1],"-sine") == 0) {
     for (int i = 0; i < num_samples; i++) {
 			step += duration / num_samples;
-			buf[i] = (cplx)(sin(2 * PI * step * freq));
+			buf[i] = (double complex)(sin(2 * PI * step * freq));
 			fprintf(wavePlotFile, "%f\t%g\n",step,creal(buf[i]));
     }
 	}
-	// Generate a square wave
-	//if (!argv[1] || strcmp(argv[1],"-square") == 0) {
-	//	int amp = 0;
-  //  for (int i = 0; i < num_samples; i++) {
-	//		amp = 1 - 2 * ((int)(step * 2 * freq) % 2);
-	//		step += duration / num_samples;
-	//		buf[i] = (cplx)amp;
-	//		fprintf(wavePlotFile, "%f\t%g\n",step,creal(buf[i]));
-  //  }
-	//}
-	// Generate a sine with two octaves
 	if (!argv[1] || strcmp(argv[1],"-octaves") == 0) {
     for (int i = 0; i < num_samples; i++) {
 			step += duration / num_samples;
-			buf[i] = (cplx)(sin(2 * PI * step * freq)) +
-				0.33 * (cplx)(sin(2 * PI * step * 2 * freq)) +
-				0.11 * (cplx)(sin(2 * PI * step * 3 * freq));
+			buf[i] = (double complex)(sin(2 * PI * step * freq)) +
+				0.33 * (double complex)(sin(2 * PI * step * 2 * freq)) +
+				0.11 * (double complex)(sin(2 * PI * step * 3 * freq));
 			fprintf(wavePlotFile, "%f\t%g\n",step,creal(buf[i]));
     }
 	}
@@ -119,7 +79,7 @@ int main(int argc, char *argv[])
 			step += duration / num_samples;
 			r = rand();
 			randD = (double)r/INT_MAX;
-			buf[i] = (cplx)(randD + (r % 3) - 1);
+			buf[i] = (double complex)(randD + (r % 3) - 1);
 			fprintf(wavePlotFile, "%f\t%g\n",step,creal(buf[i]));
     }
 	}
@@ -131,18 +91,18 @@ int main(int argc, char *argv[])
 			step += duration / num_samples;
 			r = rand();
 			randD = (double)r/INT_MAX;
-			buf[i] = (cplx)(sin(2 * PI * step * freq)) +
-				0.33 * (cplx)(sin(2 * PI * step * 2 * freq)) +
-				0.11 * (cplx)(sin(2 * PI * step * 3 * freq)) +
-				0.05 * (cplx)(randD + (r % 3) - 1);
+			buf[i] = (double complex)(sin(2 * PI * step * freq)) +
+				0.33 * (double complex)(sin(2 * PI * step * 2 * freq)) +
+				0.11 * (double complex)(sin(2 * PI * step * 3 * freq)) +
+				0.05 * (double complex)(randD + (r % 3) - 1);
 			fprintf(wavePlotFile, "%f\t%g\n",step,creal(buf[i]));
     }
 	}
 	fclose(wavePlotFile);
 
 	// Initialize the out buffer.
-	cplx* out = (cplx*) malloc(num_samples * sizeof(cplx));
-	memset(out,(cplx)0,num_samples*sizeof(out));
+	double complex* out = (double complex*) malloc(num_samples * sizeof(double complex));
+	memset(out,(double complex)0,num_samples*sizeof(out));
 	for (int i = 0; i < num_samples; i++) {
 		out[i] = buf[i];
 	}
@@ -157,9 +117,9 @@ int main(int argc, char *argv[])
 	double freq_step = 0.0;
 	int end = num_samples / 2;
 	double T = duration / num_samples;
-	cplx val;
+	double complex val;
 	for (int i = 0; i < end; i++) {
-		val = (cplx)(fabs(buf[i]) / num_samples);
+		val = (double complex)(fabs(buf[i]) / num_samples);
 		fprintf(fftPlotFile, "%f\t%g\n",freq_step,creal(val));
 		freq_step += (1/T) / num_samples;
 	}
