@@ -49,8 +49,7 @@ the test waveform.
 ### Sources
 
 Several functions were adapted from the following sources:
-
-[Original serial code snippet](https://rosettacode.org/wiki/Fast_Fourier_transform#C)
-[Rounding to the next power of 2](https://stackoverflow.com/questions/466204/rounding-up-to-next-power-of-2)
-[Modeling a sine wave](https://stackoverflow.com/questions/203890/creating-sine-or-square-wave-in-c-sharp)
-[Plotting component frequencies](https://www.ritchievink.com/blog/2017/04/23/understanding-the-fourier-transform-by-example/)
+* [Original serial code snippet](https://rosettacode.org/wiki/Fast_Fourier_transform#C)
+* [Rounding to the next power of 2](https://stackoverflow.com/questions/466204/rounding-up-to-next-power-of-2)
+* [Modeling a sine wave](https://stackoverflow.com/questions/203890/creating-sine-or-square-wave-in-c-sharp)
+* [Plotting component frequencies](https://www.ritchievink.com/blog/2017/04/23/understanding-the-fourier-transform-by-example/)
