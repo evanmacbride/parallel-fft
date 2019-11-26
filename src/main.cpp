@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
 			buf.push_back((complex<double>)(sin(2 * PI * step * freq)) +
 				0.33 * (complex<double>)(sin(2 * PI * step * 2 * freq)) +
 				0.11 * (complex<double>)(sin(2 * PI * step * 3 * freq)) +
-				0.08 * (complex<double>)(randD + (r % 3) - 1));
+				0.09 * (complex<double>)(randD + (r % 3) - 1));
 			fprintf(wavePlotFile, "%f\t%g\n",step,real(buf[i]));
     }
 	}
