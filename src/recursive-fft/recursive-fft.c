@@ -1,6 +1,6 @@
 #include <complex.h>
 #include <math.h>
-#include "fft.h"
+#include "recusive-fft.h"
 
 double PI = atan2(1, 1) * 4;
 

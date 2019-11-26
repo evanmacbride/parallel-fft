@@ -1,9 +1,9 @@
-SOURCES = src/main.c src/fft.c
+SOURCES = src/main.cpp src/fft.cpp
 SERIAL_TARGET = serial-fft
 OMP_TARGET = omp-fft
 ACC_TARGET = acc-fft
-CFLAGS = -std=c99 -lm -O2 -g
-CC = gcc
+CFLAGS = -lm -O2 -g
+CC = g++
 
 serial:
 	$(CC) $(SOURCES) $(CFLAGS) -o $(SERIAL_TARGET)

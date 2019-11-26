@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
-#include "fft.h"
+#include "recursive-fft.h"
 
 // Get next highest power of 2. Adapted from
 // https://stackoverflow.com/questions/466204/rounding-up-to-next-power-of-2
