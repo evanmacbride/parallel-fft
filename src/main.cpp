@@ -1,5 +1,8 @@
-// Original serial code snippet retrieved from:
+// Original recursive serial code snippet retrieved from:
 // https://rosettacode.org/wiki/Fast_Fourier_transform#C
+//
+// Iterative serial code retrieved from:
+// https://www.nayuki.io/page/free-small-fft-in-multiple-languages
 
 #include <stdio.h>
 #include <math.h>
