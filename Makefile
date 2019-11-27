@@ -2,7 +2,7 @@ SOURCES = src/main.cpp src/fft.cpp
 SERIAL_TARGET = serial-fft
 OMP_TARGET = omp-fft
 ACC_TARGET = acc-fft
-CFLAGS = -lm -O2 -g
+CFLAGS = -lm -O2 -g -pg
 CC = g++
 
 serial:

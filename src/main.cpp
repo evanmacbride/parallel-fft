@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 			fprintf(wavePlotFile, "%f\t%g\n",step,real(buf[i]));
     }
 	}
-	if (!argv[1] || strcmp(argv[1],"-octaves") == 0) {
+	else if (!argv[1] || strcmp(argv[1],"-octaves") == 0) {
     for (int i = 0; i < num_samples; i++) {
 			step += duration / num_samples;
 			buf.push_back((complex<double>)(sin(2 * PI * step * freq)) +
@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
     }
 	}
 	// Generate a sine with two octaves with noise
-	if (!argv[1] || strcmp(argv[1],"-noisy") == 0) {
+	else if (!argv[1] || strcmp(argv[1],"-noisy") == 0) {
 		int r = 0;
 		double randD = 0.0;
     for (int i = 0; i < num_samples; i++) {

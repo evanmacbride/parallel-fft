@@ -26,6 +26,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <stdexcept>
+#include <omp.h>
 #include "fft.hpp"
 
 using std::complex;
@@ -56,13 +57,16 @@ void Fft::transformRadix2(vector<complex<double> > &vec) {
 			std::swap(vec[i], vec[j]);
 	}
 
+	size_t halfsize;
+	size_t tablestep;
+	complex<double> temp;
 	// Cooley-Tukey decimation-in-time radix-2 FFT
 	for (size_t size = 2; size <= n; size *= 2) {
-		size_t halfsize = size / 2;
-		size_t tablestep = n / size;
+		halfsize = size / 2;
+		tablestep = n / size;
 		for (size_t i = 0; i < n; i += size) {
 			for (size_t j = i, k = 0; j < i + halfsize; j++, k += tablestep) {
-				complex<double> temp = vec[j + halfsize] * expTable[k];
+				temp = vec[j + halfsize] * expTable[k];
 				vec[j + halfsize] = vec[j] - temp;
 				vec[j] += temp;
 			}
