@@ -47,11 +47,14 @@ void Fft::transformRadix2(vector<complex<double> > &vec) {
 
 	// Trignometric table
 	vector<complex<double> > expTable(n / 2);
-	for (size_t i = 0; i < n / 2; i++)
+	size_t i;
+#pragma omp parallel for private(i) shared(expTable,n)
+	for (i = 0; i < n / 2; i++)
 		expTable[i] = std::polar(1.0, -2 * M_PI * i / n);
 
 	// Bit-reversed addressing permutation
-	for (size_t i = 0; i < n; i++) {
+#pragma omp parallel for private(i) shared(vec,n)
+	for (i = 0; i < n; i++) {
 		size_t j = reverseBits(i, levels);
 		if (j > i)
 			std::swap(vec[i], vec[j]);
@@ -60,7 +63,7 @@ void Fft::transformRadix2(vector<complex<double> > &vec) {
 	size_t halfsize;
 	size_t tablestep;
 	complex<double> temp;
-	size_t size, i, j, k;
+	size_t size, j, k;
 	// Cooley-Tukey decimation-in-time radix-2 FFT
 #pragma omp parallel private(size,halfsize,tablestep,i,temp) shared(vec)
 {
