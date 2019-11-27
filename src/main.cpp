@@ -17,6 +17,14 @@
 #include <stdexcept>
 #include "fft.hpp"
 
+#ifdef _OPENMP
+	#include <omp.h>
+	#define getClock() omp_get_wtime()
+#else
+	#include <time.h>
+	#define getClock() ((double)clock() / CLOCKS_PER_SEC)
+#endif
+
 using std::complex;
 using std::size_t;
 using std::vector;
@@ -111,7 +119,11 @@ int main(int argc, char *argv[])
 	}
 	fclose(wavePlotFile);
 
+  double time_start = getClock();
   Fft::transformRadix2(buf);
+  double time_finish = getClock();
+
+  printf("time (s)= %.6f\n", time_finish - time_start);
 
 	// Plot the component frequencies represented by the FFT. Adapted from
 	// Python code found here:
