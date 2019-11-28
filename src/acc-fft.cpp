@@ -71,7 +71,7 @@ void Fft::transformRadix2(vector<complex<double> > &vec) {
 		halfsize = size / 2;
 		tablestep = n / size;
 
-    #pragma acc parallel loop
+    #pragma acc parallel loop copy(vec)
 		for (i = 0; i < n; i += size) {
       #pragma acc loop
 			for (j = i, k = 0; j < i + halfsize; j++, k += tablestep) {
