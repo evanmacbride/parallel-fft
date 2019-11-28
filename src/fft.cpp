@@ -1,3 +1,4 @@
+// Copyright notice from original iterative serial code follows:
 /*
  * Free FFT and convolution (C++)
  *
@@ -65,7 +66,7 @@ void Fft::transformRadix2(vector<complex<double> > &vec) {
 	complex<double> temp;
 	size_t size, j, k;
 	// Cooley-Tukey decimation-in-time radix-2 FFT
-#pragma omp parallel private(size,halfsize,tablestep,i,temp) shared(vec)
+#pragma omp parallel private(size,halfsize,tablestep,i,j,k,temp) shared(vec)
 {
 	for (size = 2; size <= n; size *= 2) {
 		halfsize = size / 2;

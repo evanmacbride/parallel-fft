@@ -1,3 +1,4 @@
+// Copyright notice from original iterative serial code follows:
 /*
  * Free FFT and convolution (C++)
  *

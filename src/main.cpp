@@ -17,6 +17,8 @@
 #include <stdexcept>
 #include "fft.hpp"
 
+// Timer code snippet retrieved from:
+// https://www.appentra.com/download/8899/
 #ifdef _OPENMP
 	#include <omp.h>
 	#define getClock() omp_get_wtime()
@@ -119,6 +121,8 @@ int main(int argc, char *argv[])
 	}
 	fclose(wavePlotFile);
 
+  // Timer code snippet retrieved from:
+  // https://www.appentra.com/download/8899/
   double time_start = getClock();
   Fft::transformRadix2(buf);
   double time_finish = getClock();
@@ -140,7 +144,5 @@ int main(int argc, char *argv[])
 		freq_step += (1/T) / num_samples;
 	}
 	fclose(fftPlotFile);
-	//free(buf);
-	//free(out);
 	return 0;
 }

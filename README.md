@@ -75,3 +75,4 @@ Several functions were adapted from the following sources:
 * [Rounding to the next power of 2](https://stackoverflow.com/questions/466204/rounding-up-to-next-power-of-2)
 * [Modeling a sine wave](https://stackoverflow.com/questions/203890/creating-sine-or-square-wave-in-c-sharp)
 * [Plotting component frequencies](https://www.ritchievink.com/blog/2017/04/23/understanding-the-fourier-transform-by-example/)
+* [Timer code](https://www.appentra.com/download/8899/)
