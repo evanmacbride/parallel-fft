@@ -67,12 +67,13 @@ void Fft::transformRadix2(vector<complex<double> > &vec) {
 	size_t size, j, k;
 	// Cooley-Tukey decimation-in-time radix-2 FFT
 //#pragma omp parallel private(size,halfsize,tablestep,i,j,k,temp) shared(vec)
-#pragma acc kernels
-{
+
 	for (size = 2; size <= n; size *= 2) {
 		halfsize = size / 2;
 		tablestep = n / size;
 //#pragma omp for
+#pragma acc kernels
+{
 		for (i = 0; i < n; i += size) {
 			for (j = i, k = 0; j < i + halfsize; j++, k += tablestep) {
 				temp = vec[j + halfsize] * expTable[k];
