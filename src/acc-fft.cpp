@@ -72,9 +72,11 @@ void Fft::transformRadix2(vector<complex<double> > &vec) {
 		halfsize = size / 2;
 		tablestep = n / size;
 //#pragma omp for
-#pragma acc kernels
+#pragma acc region
 {
+    #pragma acc loop independent
 		for (i = 0; i < n; i += size) {
+      #pragma acc loop independent
 			for (j = i, k = 0; j < i + halfsize; j++, k += tablestep) {
 				temp = vec[j + halfsize] * expTable[k];
 				vec[j + halfsize] = vec[j] - temp;
