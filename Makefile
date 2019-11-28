@@ -1,4 +1,5 @@
 SOURCES = src/main.cpp src/fft.cpp
+ACC_SOURCES = src/main.cpp src/acc-fft.cpp
 SERIAL_TARGET = serial-fft
 OMP_TARGET = omp-fft
 ACC_TARGET = acc-fft
@@ -12,12 +13,12 @@ omp:
 	$(CC) $(SOURCES) $(CFLAGS) -fopenmp -o $(OMP_TARGET)
 
 acc:
-	$(CC) $(SOURCES) $(CFLAGS) -fopenacc -o $(ACC_TARGET)
+	$(CC) $(ACC_SOURCES) $(CFLAGS) -fopenacc -o $(ACC_TARGET)
 
 all:
 	$(CC) $(SOURCES) $(CFLAGS) -o $(SERIAL_TARGET)
 	$(CC) $(SOURCES) $(CFLAGS) -fopenmp -o $(OMP_TARGET)
-	$(CC) $(SOURCES) $(CFLAGS) -fopenacc -o $(ACC_TARGET)
+	$(CC) $(ACC_SOURCES) $(CFLAGS) -fopenacc -o $(ACC_TARGET)
 
 run:
 	./$(SERIAL_TARGET)
