@@ -81,10 +81,10 @@ void Fft::transformRadix2(vector<complex<double> > &vec) {
 				vec[j] += temp;
 			}
 		}
+}
 		if (size == n)  // Prevent overflow in 'size *= 2'
 			break;
 	}
-}
 }
 
 static size_t reverseBits(size_t x, int n) {
