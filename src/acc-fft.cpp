@@ -65,6 +65,7 @@ void Fft::transformRadix2(vector<complex<double> > &vec) {
 	//size_t tablestep;
 	//complex<double> temp;
 	//size_t size, j, k;
+  size_t j, k;
 	// Cooley-Tukey decimation-in-time radix-2 FFT
 
 	for (size_t size = 2; size <= n; size *= 2) {
@@ -73,7 +74,7 @@ void Fft::transformRadix2(vector<complex<double> > &vec) {
 
     #pragma acc parallel loop private(i,j,k)
 		for (size_t i = 0; i < n; i += size) {
-			for (size_t j = i, k = 0; j < i + halfsize; j++, k += tablestep) {
+			for (j = i, k = 0; j < i + halfsize; j++, k += tablestep) {
 				complex<double> temp = vec[j + halfsize] * expTable[k];
 				vec[j + halfsize] = vec[j] - temp;
 				vec[j] += temp;
