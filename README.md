@@ -69,10 +69,11 @@ the test waveform.
 
 ### Sources
 
-Several functions were adapted from the following sources:
+Some code was adapted from the following sources:
 * [Recursive serial code snippet](https://rosettacode.org/wiki/Fast_Fourier_transform#C)
 * [Iterative serial code](https://www.nayuki.io/page/free-small-fft-in-multiple-languages)
 * [Rounding to the next power of 2](https://stackoverflow.com/questions/466204/rounding-up-to-next-power-of-2)
 * [Modeling a sine wave](https://stackoverflow.com/questions/203890/creating-sine-or-square-wave-in-c-sharp)
 * [Plotting component frequencies](https://www.ritchievink.com/blog/2017/04/23/understanding-the-fourier-transform-by-example/)
 * [Timer code](https://www.appentra.com/download/8899/)
+* [Using managed memory with C++ vectors and OpenACC](https://stackoverflow.com/a/54027319)

@@ -60,12 +60,8 @@ void Fft::transformRadix2(vector<complex<double> > &vec) {
 		if (j > i)
 			std::swap(vec[i], vec[j]);
 	}
-	//size_t halfsize;
-	//size_t tablestep;
-	//complex<double> temp;
-	//size_t size, j, k;
-	// Cooley-Tukey decimation-in-time radix-2 FFT
 
+	// Cooley-Tukey decimation-in-time radix-2 FFT
 #pragma acc data copy(vec, expTable, n)
 {
 	for (size_t size = 2; size <= n; size *= 2) {
