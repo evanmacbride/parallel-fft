@@ -55,6 +55,7 @@ void Fft::transformRadix2(vector<complex<double> > &vec) {
 
 	// Bit-reversed addressing permutation
 //#pragma omp parallel for private(i) shared(vec,n)
+#pragma acc parallel loop copy(vec)
 	for (i = 0; i < n; i++) {
 		size_t j = reverseBits(i, levels);
 		if (j > i)
@@ -66,15 +67,15 @@ void Fft::transformRadix2(vector<complex<double> > &vec) {
 	complex<double> temp;
 	size_t size, j, k;
 	// Cooley-Tukey decimation-in-time radix-2 FFT
-#pragma acc data copy(vec)
-{
+//#pragma acc data copy(vec)
+//{
 	for (size = 2; size <= n; size *= 2) {
 		halfsize = size / 2;
 		tablestep = n / size;
 
-    #pragma acc parallel loop
+    #pragma acc parallel loop present(vec)
 		for (i = 0; i < n; i += size) {
-      #pragma acc loop
+      #pragma acc loop copyout(vec)
 			for (j = i, k = 0; j < i + halfsize; j++, k += tablestep) {
 				temp = vec[j + halfsize] * expTable[k];
 				vec[j + halfsize] = vec[j] - temp;
@@ -85,7 +86,7 @@ void Fft::transformRadix2(vector<complex<double> > &vec) {
 		//if (size == n)  // Prevent overflow in 'size *= 2'
 		//	break;
 	}
-}
+//}
 }
 
 static size_t reverseBits(size_t x, int n) {
