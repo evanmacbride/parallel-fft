@@ -38,7 +38,7 @@ using std::vector;
 static size_t reverseBits(size_t x, int n);
 
 void Fft::transformRadix2(vector<complex<double> > &vec) {
-	// Length variables
+        // Length variables
 	size_t n = vec.size();
 	int levels = 0;  // Compute levels = floor(log2(n))
 	for (size_t temp = n; temp > 1U; temp >>= 1)
@@ -49,30 +49,30 @@ void Fft::transformRadix2(vector<complex<double> > &vec) {
 	// Trignometric table
 	vector<complex<double> > expTable(n / 2);
 	size_t i;
-//#pragma omp parallel for private(i) shared(expTable,n)
+  //#pragma acc parallel loop copy(expTable,n)
 	for (i = 0; i < n / 2; i++)
 		expTable[i] = std::polar(1.0, -2 * M_PI * i / n);
 
 	// Bit-reversed addressing permutation
-//#pragma omp parallel for private(i) shared(vec,n)
-  #pragma acc parallel loop copy(vec)
+  #pragma acc parallel loop copy(vec) copyin(levels)
 	for (i = 0; i < n; i++) {
 		size_t j = reverseBits(i, levels);
 		if (j > i)
 			std::swap(vec[i], vec[j]);
 	}
-
 	size_t halfsize;
 	size_t tablestep;
 	complex<double> temp;
 	size_t size, j, k;
 	// Cooley-Tukey decimation-in-time radix-2 FFT
 
+  #pragma acc data copy(vec, expTable) create(n)
+  {
 	for (size = 2; size <= n; size *= 2) {
 		halfsize = size / 2;
 		tablestep = n / size;
 
-    #pragma acc parallel loop copy(vec)
+    #pragma acc parallel loop
 		for (i = 0; i < n; i += size) {
       #pragma acc loop
 			for (j = i, k = 0; j < i + halfsize; j++, k += tablestep) {
@@ -81,10 +81,10 @@ void Fft::transformRadix2(vector<complex<double> > &vec) {
 				vec[j] += temp;
 			}
 		}
-
 		if (size == n)  // Prevent overflow in 'size *= 2'
 			break;
 	}
+  }
 }
 
 static size_t reverseBits(size_t x, int n) {
