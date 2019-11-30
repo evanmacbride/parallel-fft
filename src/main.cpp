@@ -127,7 +127,8 @@ int main(int argc, char *argv[])
   Fft::transformRadix2(buf);
   double time_finish = getClock();
 
-  printf("time (s)= %.6f\n", time_finish - time_start);
+  //printf("time (s)= %.6f\n", time_finish - time_start);
+  printf("%.6f\t%.6f\n", duration, time_finish - time_start);
 
 	// Plot the component frequencies represented by the FFT. Adapted from
 	// Python code found here:
