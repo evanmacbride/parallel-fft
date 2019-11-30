@@ -13,12 +13,12 @@ omp:
 	$(CC) $(SOURCES) $(CFLAGS) -fopenmp -o $(OMP_TARGET)
 
 acc:
-	$(CC) $(ACC_SOURCES) $(CFLAGS) -fopenacc -o $(ACC_TARGET)
+	pgc++ -ta=tesla:managed -fast -O3 src/main.cpp src/acc-fft.cpp -g -pg -o acc-fft
 
 all:
 	$(CC) $(SOURCES) $(CFLAGS) -o $(SERIAL_TARGET)
 	$(CC) $(SOURCES) $(CFLAGS) -fopenmp -o $(OMP_TARGET)
-	$(CC) $(ACC_SOURCES) $(CFLAGS) -fopenacc -o $(ACC_TARGET)
+	pgc++ -ta=tesla:managed -fast -O3 src/main.cpp src/acc-fft.cpp -g -pg -o acc-fft
 
 run:
 	./$(SERIAL_TARGET)
