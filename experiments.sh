@@ -9,7 +9,7 @@ DURATION_START=0.05
 DURATION_STEP_FACTOR=10
 
 echo "Compiling..."
-
+module load pgi/19.4
 make all
 
 for (( i=0; i<5; i++ ))
