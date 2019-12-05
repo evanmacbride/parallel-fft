@@ -20,7 +20,8 @@ do
 
   for (( j=0; j<5; j++ ))
   do
-    DURATION=$(( $DURATION_START*$DURATION_STEP_FACTOR**$j ))
+    MAG=$(($DURATION_STEP_FACTOR**$j))
+    DURATION=$(( $DURATION_START*$MAG ))
     srun ./serial-fft $WAVEFORM $DURATION $FREQUENCY >> $DIR/serial-results$i.txt
   done
 
@@ -30,7 +31,7 @@ do
 
   for (( j=0; j<5; j++ ))
   do
-    DURATION=$(( $DURATION_START*$DURATION_STEP_FACTOR**$j ))
+    DURATION=$(( $DURATION_START*$MAG ))
     srun -c 2 ./omp-fft $WAVEFORM $DURATION $FREQUENCY >> $DIR/omp-2cores-results$i.txt
   done
 
@@ -39,7 +40,7 @@ do
 
   for (( j=0; j<5; j++ ))
   do
-    DURATION=$(( $DURATION_START*$DURATION_STEP_FACTOR**$j ))
+    DURATION=$(( $DURATION_START*$MAG ))
     srun -c 4 ./omp-fft $WAVEFORM $DURATION $FREQUENCY >> $DIR/omp-4cores-results$i.txt
   done
 
@@ -48,7 +49,7 @@ do
 
   for (( j=0; j<5; j++ ))
   do
-    DURATION=$(( $DURATION_START*$DURATION_STEP_FACTOR**$j ))
+    DURATION=$(( $DURATION_START*$MAG ))
     srun -c 8 ./omp-fft $WAVEFORM $DURATION $FREQUENCY >> $DIR/omp-8cores-results$i.txt
   done
 
@@ -57,7 +58,7 @@ do
 
   for (( j=0; j<5; j++ ))
   do
-    DURATION=$(( $DURATION_START*$DURATION_STEP_FACTOR**$j ))
+    DURATION=$(( $DURATION_START*$MAG ))
     srun -c 16 ./omp-fft $WAVEFORM $DURATION $FREQUENCY >> $DIR/omp-16cores-results$i.txt
   done
 
@@ -66,7 +67,7 @@ do
 
   for (( j=0; j<5; j++ ))
   do
-    DURATION=$(( $DURATION_START*$DURATION_STEP_FACTOR**$j ))
+    DURATION=$(( $DURATION_START*$MAG ))
     srun -p cisc372 --gres=gpu:1 ./acc-fft $WAVEFORM $DURATION $FREQUENCY >> $DIR/acc-GPU-results$i.txt
   done
 done
