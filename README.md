@@ -6,7 +6,9 @@ This project uses the [OpenMP](https://www.openmp.org/) and
 [OpenACC](https://www.openacc.org/) parallel programming frameworks to implement
 the
 [Cooley-Tukey](https://en.wikipedia.org/wiki/Cooley%E2%80%93Tukey_FFT_algorithm)
-fast Fourier transform (FFT) algorithm.
+fast Fourier transform (FFT) algorithm. It was created by Evan MacBride, Seth
+Prentice, and Ryan Barber for the University of Delaware's CISC372 Parallel
+Computing course.
 
 ### How To Use
 
