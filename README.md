@@ -16,11 +16,11 @@ A makefile is provided. The options are
 ```
 make serial
 make omp
-make acc
+make accgpu
 make all
 ```
 
-```make serial``` compiles the original, unparallelized code, ```make omp``` compiles an OpenMP parallelization, ```make acc``` compiles an OpenACC parallelization, and ```make all``` compiles all three.
+```make serial``` compiles the original, unparallelized code, ```make omp``` compiles an OpenMP parallelization, ```make accgpu``` compiles an OpenACC (GPU) parallelization, and ```make all``` compiles all three.
 
 There are also commands for ```make clean``` to remove all executables and
 ```make run``` to run ```serial-fft``` with default settings.
@@ -47,11 +47,11 @@ and the options for ```executable``` are
 ```
 serial-fft
 omp-fft
-acc-fft
+acc-gpu-fft
 ```
 
 ```serial-fft``` is the original, unparallelized code, ```omp-fft``` is an
-OpenMP parallelization, and ```acc-fft``` is an OpenACC parallelization.
+OpenMP parallelization, and ```acc-gpu-fft``` is an OpenACC (GPU) parallelization.
 
 
 ```-sine``` generates a sine wave at the given test frequency. ```-octaves```
@@ -66,6 +66,14 @@ Output is written to two .TXT files (```wave.txt``` and ```fft.txt```), both of
 which can be rendered in [gnuplot](http://www.gnuplot.info/). ```wave.txt```
 plots the test waveform, and ```fft.txt``` plots the component frequencies of
 the test waveform.
+
+### Experiments
+
+```experiments.sh``` is included to help run the program and organize output
+data into a format that can be plotted in [gnuplot](http://www.gnuplot.info/).
+Only input duration and runtime are given as output, which is saved in .txt
+files and organized into timestamped folders. Each iteration of each
+implementation is saved to its own appropriately named file.
 
 ### Sources
 
