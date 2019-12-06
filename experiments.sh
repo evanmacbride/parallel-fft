@@ -74,6 +74,6 @@ do
   do
     MAG=$(($DURATION_STEP_FACTOR**$j))
     DURATION=$(echo $DURATION_START $MAG | awk '{printf "%.6f\n",$1*$2}')
-    srun -p cisc372 --gres=gpu:1 ./acc-fft $WAVEFORM $DURATION $FREQUENCY >> $DIR/acc-GPU-results$i.txt
+    srun -p cisc372 --gres=gpu:1 ./acc-gpu-fft $WAVEFORM $DURATION $FREQUENCY >> $DIR/acc-GPU-results$i.txt
   done
 done

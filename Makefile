@@ -2,7 +2,8 @@ SOURCES = src/main.cpp src/fft.cpp
 ACC_SOURCES = src/main.cpp src/acc-fft.cpp
 SERIAL_TARGET = serial-fft
 OMP_TARGET = omp-fft
-ACC_TARGET = acc-fft
+ACC_GPU_TARGET = acc-gpu-fft
+ACC_MC_TARGET = acc-mc-fft
 CFLAGS = -lm -O2 -g -pg
 CC = g++
 
@@ -12,8 +13,11 @@ serial:
 omp:
 	$(CC) $(SOURCES) $(CFLAGS) -fopenmp -o $(OMP_TARGET)
 
-acc:
-	pgc++ -ta=tesla:managed -fast -O3 src/main.cpp src/acc-fft.cpp -g -pg -o acc-fft
+accgpu:
+	pgc++ -ta=tesla:managed -fast -O3 src/main.cpp src/acc-fft.cpp -g -pg -o acc-gpu-fft
+
+accmc:
+	pgc++ -ta=multicore -fast -O3 src/main.cpp src/acc-fft.cpp -g -pg -o acc-gpu-fft
 
 all:
 	$(CC) $(SOURCES) $(CFLAGS) -o $(SERIAL_TARGET)
@@ -26,4 +30,5 @@ run:
 clean:
 	rm $(SERIAL_TARGET)
 	rm $(OMP_TARGET)
-	rm $(ACC_TARGET)
+	rm $(ACC_GPU_TARGET)
+	rm $(ACC_MC_TARGET)
