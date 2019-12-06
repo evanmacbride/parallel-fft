@@ -29,6 +29,7 @@
 #include <stdexcept>
 #include <omp.h>
 #include "fft.hpp"
+#include <openacc.h>
 
 using std::complex;
 using std::size_t;

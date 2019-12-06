@@ -17,7 +17,7 @@ accgpu:
 	pgc++ -ta=tesla:managed -fast -O3 src/main.cpp src/acc-fft.cpp -g -pg -o acc-gpu-fft
 
 accmc:
-	pgc++ -ta=multicore -fast -O3 src/main.cpp src/acc-fft.cpp -g -pg -o acc-gpu-fft
+	$(CC) (SOURCES) $(CFLAGS) -fopenacc -o acc-mc-fft
 
 all:
 	$(CC) $(SOURCES) $(CFLAGS) -o $(SERIAL_TARGET)
