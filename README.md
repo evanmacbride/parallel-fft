@@ -64,7 +64,8 @@ the ```-octaves``` and ```-noise``` waveforms.
 
 If no command line arguments are given, the defaults are ```-sine 0.5 60```.
 
-Output is written to two .TXT files (```wave.txt``` and ```fft.txt```), both of
+Input duration and runtime are printed as output. Additionally, two .TXT files
+(```wave.txt``` and ```fft.txt```) are generated, both of
 which can be rendered in [gnuplot](http://www.gnuplot.info/). ```wave.txt```
 plots the test waveform, and ```fft.txt``` plots the component frequencies of
 the test waveform.
