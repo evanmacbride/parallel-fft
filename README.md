@@ -74,9 +74,12 @@ the test waveform.
 
 ```experiments.sh``` is included to help run the program and organize output
 data into a format that can be plotted in [gnuplot](http://www.gnuplot.info/).
-Only input duration and runtime are given as output, which is saved in .txt
-files and organized into timestamped folders. Each iteration of each
-implementation is saved to its own appropriately named file.
+Input duration and runtime are given as output, which is saved in .txt
+files and organized into timestamped folders. ```wave.txt``` and ```fft.txt```
+are generated with each iteration of each implementation, and all but the last
+instances of these files will be overwritten. Input durations and runtimes for
+individual iterations of the different implementations will be saved into their
+own appropriately named .txt files.
 
 ### Sources
 
